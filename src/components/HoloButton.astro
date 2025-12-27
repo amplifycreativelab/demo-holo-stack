@@ -1,0 +1,38 @@
+---
+import { MoveRight } from "lucide-astro";
+
+interface Props {
+    href?: string;
+    variant?: "primary" | "secondary";
+    class?: string;
+    showIcon?: boolean;
+}
+
+const {
+    href,
+    variant = "primary",
+    class: className,
+    showIcon = false,
+    ...rest
+} = Astro.props;
+
+const baseStyles =
+    "inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full font-display font-medium transition-all duration-300 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-holo-a focus-visible:ring-offset-2 focus-visible:ring-offset-night";
+
+const variants = {
+    primary:
+        "bg-holo-a text-white hover:bg-holo-a/90 hover:shadow-[0_0_20px_rgba(124,92,255,0.4)]",
+    secondary: "glass text-text-primary hover:border-white/40 hover:bg-white/5",
+};
+
+const Tag = href ? "a" : "button";
+---
+
+<Tag href={href} class:list={[baseStyles, variants[variant], className]} {...rest}>
+    <slot />
+    {
+        showIcon && (
+            <MoveRight class="w-4 h-4 transition-transform group-hover:translate-x-1" />
+        )
+    }
+</Tag>

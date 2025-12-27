@@ -1,0 +1,130 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import GlassPanel from "../../components/GlassPanel.astro";
+import { features } from "../../data/features";
+import {
+    Zap,
+    ShieldCheck,
+    Cpu,
+    Globe,
+    Infinity,
+    Layers,
+    Wind,
+    Radio,
+} from "lucide-astro";
+
+const iconMap = {
+    Zap,
+    Lock: ShieldCheck,
+    Cpu,
+    Globe,
+};
+
+const extraFeatures = [
+    {
+        title: "Stateless Execution",
+        icon: Infinity,
+        description:
+            "Highly elastic compute that lives only as long as the request.",
+    },
+    {
+        title: "Dynamic Routing",
+        icon: Layers,
+        description: "Intelligent traffic management across the global mesh.",
+    },
+    {
+        title: "Instant Hydration",
+        icon: Wind,
+        description:
+            "Zero-latency state restoration for distributed applications.",
+    },
+    {
+        title: "Telemetry Stream",
+        icon: Radio,
+        description: "Holographic real-time monitoring of every neural node.",
+    },
+];
+---
+
+<MainLayout title="Features - Substrate Capabilities">
+    <Header slot="header" />
+
+    <section class="pt-40 pb-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-20">
+                <h1 class="text-5xl md:text-6xl font-bold mb-6">
+                    Core <span class="text-holo-a">Substrate</span> Capabilities.
+                </h1>
+                <p class="text-text-muted text-xl max-w-3xl leading-relaxed">
+                    The HoloStack substrate is engineered for performance,
+                    designed for optics, and built with extreme restraint.
+                    Explore the layers of our neural architecture.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-32">
+                {
+                    features.map((feature) => {
+                        const Icon =
+                            iconMap[feature.icon as keyof typeof iconMap] ||
+                            Zap;
+                        return (
+                            <GlassPanel
+                                intensity="strong"
+                                class="p-12 group relative overflow-hidden"
+                            >
+                                <div class="absolute -top-24 -right-24 w-64 h-64 bg-holo-a/10 blur-[100px] group-hover:bg-holo-a/20 transition-colors" />
+                                <div class="relative z-10">
+                                    <div class="w-16 h-16 rounded-2xl bg-holo-a/10 flex items-center justify-center mb-8 border border-holo-a/20">
+                                        <Icon class="w-8 h-8 text-holo-a" />
+                                    </div>
+                                    <h2 class="text-3xl font-bold mb-4">
+                                        {feature.title}
+                                    </h2>
+                                    <p class="text-text-muted text-lg leading-relaxed mb-8">
+                                        {feature.description}
+                                    </p>
+                                    <ul class="space-y-4">
+                                        {[
+                                            "99.999% Uptime",
+                                            "Zero-trust Security",
+                                            "Global Propagation",
+                                        ].map((item) => (
+                                            <li class="flex items-center gap-3 text-sm text-text-primary/80">
+                                                <div class="w-1.5 h-1.5 rounded-full bg-holo-b" />
+                                                {item}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </GlassPanel>
+                        );
+                    })
+                }
+            </div>
+
+            <div class="mb-20">
+                <h2 class="text-3xl font-bold mb-12">Additional Modules</h2>
+                <div
+                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+                >
+                    {
+                        extraFeatures.map((f) => (
+                            <GlassPanel interactive class="p-8">
+                                <f.icon class="w-6 h-6 text-holo-b mb-4" />
+                                <h3 class="font-bold mb-2">{f.title}</h3>
+                                <p class="text-sm text-text-muted leading-relaxed">
+                                    {f.description}
+                                </p>
+                            </GlassPanel>
+                        ))
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <Footer slot="footer" />
+</MainLayout>

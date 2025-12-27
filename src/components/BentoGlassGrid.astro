@@ -1,0 +1,69 @@
+---
+import GlassPanel from "./GlassPanel.astro";
+import { Cpu, Globe, Lock, Zap } from "lucide-astro";
+---
+
+<div class="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-4 h-[600px]">
+    {/* Main Hero Panel */}
+    <GlassPanel
+        intensity="strong"
+        class="md:col-span-2 md:row-span-2 p-10 flex flex-col justify-end group"
+    >
+        <div
+            class="absolute top-10 right-10 w-32 h-32 bg-holo-a/20 blur-3xl group-hover:bg-holo-a/40 transition-colors duration-700"
+        >
+        </div>
+        <div class="relative z-10">
+            <div
+                class="w-12 h-12 rounded-xl bg-holo-a flex items-center justify-center mb-6 shadow-2xl"
+            >
+                <Zap class="text-white fill-white" />
+            </div>
+            <h3 class="text-3xl font-bold mb-4">Neural Architecture</h3>
+            <p class="text-text-muted leading-relaxed">
+                HoloStack's core is built on a distributed neural substrate that
+                adapts to your workload in real-time. Optics meets efficiency.
+            </p>
+        </div>
+    </GlassPanel>
+
+    {/* Security Panel */}
+    <GlassPanel
+        interactive
+        class="md:col-span-2 p-8 flex items-center gap-6 group"
+    >
+        <div
+            class="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center border border-glass-edge group-hover:border-holo-b/50 transition-colors"
+        >
+            <Lock class="w-8 h-8 text-holo-b" />
+        </div>
+        <div>
+            <h4 class="text-xl font-bold mb-1">Quantum Encryption</h4>
+            <p class="text-sm text-text-muted">
+                Security that scales with your ambition. Zero-trust by design.
+            </p>
+        </div>
+    </GlassPanel>
+
+    {/* Performance Panel */}
+    <GlassPanel interactive class="p-8 flex flex-col justify-between group">
+        <Cpu
+            class="w-8 h-8 text-holo-a group-hover:scale-110 transition-transform"
+        />
+        <div>
+            <h4 class="text-lg font-bold mb-1">0.4ms Latency</h4>
+            <p class="text-xs text-text-muted">Global edge delivery.</p>
+        </div>
+    </GlassPanel>
+
+    {/* Global Panel */}
+    <GlassPanel interactive class="p-8 flex flex-col justify-between group">
+        <Globe
+            class="w-8 h-8 text-holo-b group-hover:scale-110 transition-transform"
+        />
+        <div>
+            <h4 class="text-lg font-bold mb-1">Global Mesh</h4>
+            <p class="text-xs text-text-muted">Connect everything.</p>
+        </div>
+    </GlassPanel>
+</div>

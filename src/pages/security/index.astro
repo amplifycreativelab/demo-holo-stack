@@ -1,0 +1,158 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import GlassPanel from "../../components/GlassPanel.astro";
+import {
+    Shield,
+    Lock,
+    Fingerprint,
+    FileCheck,
+    CheckCircle,
+} from "lucide-astro";
+
+const compliance = ["SOC 2 Type II", "GDPR", "HIPAA", "ISO 27001", "PCI-DSS"];
+---
+
+<MainLayout title="Security - Quantum-Safe Substrate">
+    <Header slot="header" />
+
+    <section class="pt-40 pb-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="max-w-3xl mb-20">
+                <h1 class="text-5xl md:text-6xl font-bold mb-6">
+                    Security is our <span class="text-signal">Core</span>.
+                </h1>
+                <p class="text-text-muted text-xl leading-relaxed">
+                    HoloStack uses post-quantum cryptographic layers to ensure
+                    your data remains your data. Built with a zero-trust
+                    architecture from the ground up.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
+                {
+                    [
+                        {
+                            title: "Encryption",
+                            icon: Lock,
+                            desc: "AES-256-GCM at rest, TLS 1.3 in transit with perfect forward secrecy.",
+                        },
+                        {
+                            title: "Authentication",
+                            icon: Fingerprint,
+                            desc: "Biometric and OIDC-compliant identity layers with hardware key support.",
+                        },
+                        {
+                            title: "Compliance",
+                            icon: FileCheck,
+                            desc: "Continuous monitoring and automated compliance reports.",
+                        },
+                    ].map((item) => (
+                        <GlassPanel class="p-10 border-signal/20">
+                            <item.icon class="w-10 h-10 text-signal mb-6" />
+                            <h3 class="text-2xl font-bold mb-3">
+                                {item.title}
+                            </h3>
+                            <p class="text-text-muted text-sm leading-relaxed">
+                                {item.desc}
+                            </p>
+                        </GlassPanel>
+                    ))
+                }
+            </div>
+
+            <div class="mb-32">
+                <h2 class="text-3xl font-bold mb-12">Compliance Ecosystem</h2>
+                <div class="flex flex-wrap gap-4">
+                    {
+                        compliance.map((c) => (
+                            <div class="px-8 py-4 glass border-white/5 rounded-2xl flex items-center gap-3">
+                                <CheckCircle class="w-5 h-5 text-holo-b" />
+                                <span class="font-bold tracking-tight">
+                                    {c}
+                                </span>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+
+            <GlassPanel
+                intensity="strong"
+                class="p-12 relative overflow-hidden"
+            >
+                <div
+                    class="absolute -bottom-24 -right-24 w-64 h-64 bg-signal/10 blur-[100px]"
+                >
+                </div>
+                <div class="grid md:grid-cols-2 gap-12 relative z-10">
+                    <div>
+                        <h2 class="text-3xl font-bold mb-6">
+                            Real-time Perimeter Defense
+                        </h2>
+                        <p class="text-text-muted mb-8 leading-relaxed">
+                            Our neural substrate detects anomalies in traffic
+                            patterns within 50ms, automatically isolating
+                            compromised nodes and shifting traffic to healthy
+                            replicas.
+                        </p>
+                        <ul class="space-y-4">
+                            {
+                                [
+                                    "Automatic DDoS mitigation at L3, L4, and L7",
+                                    "WAF with holographic threat signature detection",
+                                    "Isolated sandbox execution for all user logic",
+                                ].map((item) => (
+                                    <li class="flex items-center gap-3 text-sm font-medium">
+                                        <Shield class="w-4 h-4 text-signal" />
+                                        {item}
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                    </div>
+                    <div
+                        class="bg-black/40 rounded-3xl border border-glass-edge p-6 font-mono text-xs text-text-muted"
+                    >
+                        <div
+                            class="flex items-center justify-between mb-4 border-b border-glass-edge pb-2"
+                        >
+                            <span>substrate-firewall.log</span>
+                            <div class="flex gap-1.5">
+                                <div
+                                    class="w-2.5 h-2.5 rounded-full bg-signal/50"
+                                >
+                                </div>
+                                <div
+                                    class="w-2.5 h-2.5 rounded-full bg-holo-a/50"
+                                >
+                                </div>
+                                <div
+                                    class="w-2.5 h-2.5 rounded-full bg-holo-b/50"
+                                >
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-signal/80">
+                            [DETECTED] Anomalous traffic pattern in Node:PHX-02
+                        </p>
+                        <p>
+                            [INFO] Initiating isolate-and-replicate protocol...
+                        </p>
+                        <p>
+                            [INFO] Node:PHX-02 quarantined. Traffic redirected
+                            to Node:PHX-04
+                        </p>
+                        <p class="text-holo-b">
+                            [SUCCESS] Substrate stabilized in 42ms.
+                        </p>
+                        <p class="animate-pulse">_</p>
+                    </div>
+                </div>
+            </GlassPanel>
+        </div>
+    </section>
+
+    <Footer slot="footer" />
+</MainLayout>

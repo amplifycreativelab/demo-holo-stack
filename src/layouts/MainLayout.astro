@@ -1,0 +1,89 @@
+---
+import "@fontsource/sora/400.css";
+import "@fontsource/sora/600.css";
+import "@fontsource/sora/700.css";
+import "@fontsource-variable/inter";
+import "../styles/global.css";
+import { ViewTransitions } from "astro:transitions";
+import DemoLayout from "./DemoLayout.astro";
+
+interface Props {
+    title: string;
+    description?: string;
+}
+
+const {
+    title,
+    description = "HoloStack - Next generation holographic glassmorphism SaaS",
+} = Astro.props;
+const siteName = "HoloStack";
+const fullTitle = `${title} | ${siteName}`;
+
+// Base path for GitHub Pages
+const baseUrl = import.meta.env.BASE_URL;
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/svg+xml" href={`${baseUrl}favicon.svg`} />
+        <meta name="generator" content={Astro.generator} />
+        <meta name="robots" content="noindex, nofollow" />
+        <title>{fullTitle}</title>
+        <meta name="description" content={description} />
+        <ViewTransitions />
+    </head>
+    <body class="bg-night text-text-primary overflow-x-hidden antialiased">
+        <DemoLayout>
+            {/* Global Background Blobs */}
+            <div
+                transition:persist="bg"
+                class="fixed inset-0 pointer-events-none -z-10 overflow-hidden"
+            >
+                <div
+                    class="bg-blob w-[600px] h-[600px] bg-holo-a top-[-200px] left-[-100px]"
+                >
+                </div>
+                <div
+                    class="bg-blob w-[500px] h-[500px] bg-holo-b bottom-[-100px] right-[-100px]"
+                >
+                </div>
+                <div
+                    class="bg-blob w-[400px] h-[400px] bg-holo-a top-[40%] right-[10%]"
+                >
+                </div>
+            </div>
+
+            <slot name="header" />
+
+            <main id="main-content">
+                <slot />
+            </main>
+
+            <slot name="footer" />
+
+            <style is:global>
+                :root {
+                    --accent: 124, 92, 255;
+                    --accent-light: 0, 229, 255;
+                }
+
+                ::-webkit-scrollbar {
+                    width: 10px;
+                }
+                ::-webkit-scrollbar-track {
+                    background: #070a12;
+                }
+                ::-webkit-scrollbar-thumb {
+                    background: rgba(255, 255, 255, 0.1);
+                    border-radius: 5px;
+                }
+                ::-webkit-scrollbar-thumb:hover {
+                    background: rgba(255, 255, 255, 0.2);
+                }
+            </style>
+        </DemoLayout>
+    </body>
+</html>

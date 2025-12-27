@@ -1,0 +1,90 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import PricingToggleIsland from "../../components/islands/PricingToggleIsland";
+import GlassPanel from "../../components/GlassPanel.astro";
+import { pricingPlans } from "../../data/pricing";
+import { HelpCircle } from "lucide-astro";
+
+const faqs = [
+    {
+        q: "How is the holographic substrate billed?",
+        a: "Billing is based on active Neural Nodes and data throughput across the global mesh.",
+    },
+    {
+        q: "Can I cancel my subscription at any time?",
+        a: "Yes, you can deactivate your substrate at the end of any billing cycle with zero penalty.",
+    },
+    {
+        q: "Is there a limit on quantum encryption nodes?",
+        a: "Starter plans have limits, but Pro and Enterprise offer unlimited quantum-safe endpoints.",
+    },
+];
+---
+
+<MainLayout title="Pricing - Scale Your Substrate">
+    <Header slot="header" />
+
+    <section class="pt-40 pb-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-20">
+                <h1 class="text-5xl md:text-6xl font-bold mb-6">
+                    Simple, <span class="text-holo-a">Optical</span> Pricing.
+                </h1>
+                <p
+                    class="text-text-muted text-xl max-w-2xl mx-auto leading-relaxed"
+                >
+                    Choose the layer that fits your scale. No hidden fees, just
+                    pure performance.
+                </p>
+            </div>
+
+            <PricingToggleIsland client:load plans={pricingPlans} />
+
+            <div class="mt-32 max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold mb-12 text-center">
+                    Frequently Asked Questions
+                </h2>
+                <div class="space-y-6">
+                    {
+                        faqs.map((faq) => (
+                            <GlassPanel class="p-8">
+                                <div class="flex gap-4">
+                                    <HelpCircle class="w-6 h-6 text-holo-a flex-shrink-0" />
+                                    <div>
+                                        <h3 class="font-bold mb-2">{faq.q}</h3>
+                                        <p class="text-text-muted text-sm leading-relaxed">
+                                            {faq.a}
+                                        </p>
+                                    </div>
+                                </div>
+                            </GlassPanel>
+                        ))
+                    }
+                </div>
+            </div>
+
+            <div
+                class="mt-32 p-12 glass rounded-[3rem] text-center relative overflow-hidden border-holo-b/30 ring-1 ring-holo-b/20"
+            >
+                <div class="absolute inset-0 bg-holo-b/5"></div>
+                <h2 class="text-3xl font-bold mb-4 relative z-10">
+                    Need a Custom Substrate?
+                </h2>
+                <p class="text-text-muted mb-10 max-w-xl mx-auto relative z-10">
+                    We offer specialized solutions for high-frequency trading,
+                    aerospace global mesh, and neural-intensive workloads.
+                </p>
+                <a
+                    href={`${import.meta.env.BASE_URL}contact`}
+                    class="inline-flex px-10 py-4 bg-holo-b text-night font-bold rounded-2xl relative z-10 hover:scale-[1.05] transition-transform"
+                >
+                    Talk to Architecture Team
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <Footer slot="footer" />
+</MainLayout>

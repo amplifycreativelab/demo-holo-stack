@@ -1,0 +1,134 @@
+---
+interface AccordionItem {
+    id: string;
+    title: string;
+    content: string;
+    isOpen?: boolean;
+}
+
+interface Props {
+    items: AccordionItem[];
+    allowMultiple?: boolean;
+}
+
+const { items, allowMultiple = false } = Astro.props;
+---
+
+<div class="space-y-4" role="presentation">
+    {items.map((item, index) => (
+        <div class="glass rounded-xl overflow-hidden" role="presentation">
+            <button
+                type="button"
+                class="w-full px-6 py-4 flex items-center justify-between text-left transition-colors hover:bg-white/5"
+                aria-expanded={item.isOpen}
+                aria-controls={`accordion-content-${item.id}`}
+                id={`accordion-trigger-${item.id}`}
+                data-accordion-trigger={item.id}
+            >
+                <span class="font-semibold text-text-primary">{item.title}</span>
+                <svg
+                    class={`w-5 h-5 transition-transform duration-300 text-text-muted ${
+                        item.isOpen ? 'rotate-180' : ''
+                    }`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+            <div
+                id={`accordion-content-${item.id}`}
+                class={`overflow-hidden transition-all duration-300 ${
+                    item.isOpen ? 'max-h-96' : 'max-h-0'
+                }`}
+                role="region"
+                aria-labelledby={`accordion-trigger-${item.id}`}
+            >
+                <div class="px-6 pb-4 text-text-muted leading-relaxed">
+                    {item.content}
+                </div>
+            </div>
+        </div>
+    ))}
+</div>
+
+<script>
+    document.querySelectorAll('[data-accordion-trigger]').forEach(trigger => {
+        const htmlTrigger = trigger as HTMLElement;
+        const allowMultiple = false;
+        
+        htmlTrigger.addEventListener('click', () => {
+            const id = htmlTrigger.dataset.accordionTrigger;
+            if (!id) return;
+            
+            const content = document.getElementById(`accordion-content-${id}`);
+            if (!content) return;
+            
+            const isOpen = content.classList.contains('max-h-96');
+            
+            // Close all if allowMultiple is false
+            if (!allowMultiple) {
+                document.querySelectorAll('[id^="accordion-content-"]').forEach(c => {
+                    c.classList.remove('max-h-96');
+                    c.classList.add('max-h-0');
+                    const triggerId = c.id.replace('accordion-content-', '');
+                    const triggerEl = document.getElementById(`accordion-trigger-${triggerId}`);
+                    if (triggerEl) {
+                        triggerEl.setAttribute('aria-expanded', 'false');
+                        const svg = triggerEl.querySelector('svg');
+                        if (svg) svg.classList.remove('rotate-180');
+                    }
+                });
+            }
+            
+            // Toggle current
+            if (isOpen) {
+                content.classList.remove('max-h-96');
+                content.classList.add('max-h-0');
+                htmlTrigger.setAttribute('aria-expanded', 'false');
+                const svg = htmlTrigger.querySelector('svg');
+                if (svg) svg.classList.remove('rotate-180');
+            } else {
+                content.classList.remove('max-h-0');
+                content.classList.add('max-h-96');
+                htmlTrigger.setAttribute('aria-expanded', 'true');
+                const svg = htmlTrigger.querySelector('svg');
+                if (svg) svg.classList.add('rotate-180');
+            }
+        });
+        
+        // Keyboard support
+        htmlTrigger.addEventListener('keydown', (e) => {
+            const keyboardEvent = e as KeyboardEvent;
+            const triggers = Array.from(document.querySelectorAll('[data-accordion-trigger]'));
+            const currentIndex = triggers.indexOf(htmlTrigger);
+            
+            switch (keyboardEvent.key) {
+                case 'ArrowDown':
+                    e.preventDefault();
+                    const nextTrigger = triggers[currentIndex + 1];
+                    if (nextTrigger) {
+                        (nextTrigger as HTMLElement).focus();
+                    }
+                    break;
+                case 'ArrowUp':
+                    e.preventDefault();
+                    const prevTrigger = triggers[currentIndex - 1];
+                    if (prevTrigger) {
+                        (prevTrigger as HTMLElement).focus();
+                    }
+                    break;
+                case 'Home':
+                    e.preventDefault();
+                    (triggers[0] as HTMLElement)?.focus();
+                    break;
+                case 'End':
+                    e.preventDefault();
+                    (triggers[triggers.length - 1] as HTMLElement)?.focus();
+                    break;
+            }
+        });
+    });
+</script>

@@ -1,0 +1,128 @@
+---
+interface Props {
+    id: string;
+    title: string;
+    isOpen?: boolean;
+    onClose?: () => void;
+    size?: 'sm' | 'md' | 'lg' | 'xl';
+}
+
+const { id, title, isOpen = false, onClose, size = 'md' } = Astro.props;
+
+const sizeClasses = {
+    sm: 'max-w-md',
+    md: 'max-w-lg',
+    lg: 'max-w-2xl',
+    xl: 'max-w-4xl'
+};
+---
+
+<div
+    id={id}
+    class={`fixed inset-0 z-50 flex items-center justify-center p-4 ${
+        isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+    }`}
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby={`${id}-title`}
+    aria-hidden={!isOpen}
+>
+    <!-- Backdrop -->
+    <div
+        class="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        data-modal-backdrop
+        aria-hidden="true"
+    ></div>
+    
+    <!-- Modal Content -->
+    <div
+        class={`relative glass-strong rounded-[2rem] p-8 w-full ${sizeClasses[size]} transform transition-all duration-300 ${
+            isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
+        }`}
+        role="document"
+    >
+        <!-- Close Button -->
+        <button
+            type="button"
+            data-modal-close
+            class="absolute top-4 right-4 p-2 rounded-lg hover:bg-white/10 transition-colors"
+            aria-label="Close modal"
+        >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+        
+        <!-- Modal Header -->
+        <h2 id={`${id}-title`} class="text-2xl font-bold mb-4 pr-8">
+            {title}
+        </h2>
+        
+        <!-- Modal Body -->
+        <div class="mb-6">
+            <slot />
+        </div>
+        
+        <!-- Modal Footer -->
+        <div class="flex justify-end gap-3">
+            <slot name="footer" />
+        </div>
+    </div>
+</div>
+
+<script>
+    const modal = document.getElementById('{id}');
+    const closeBtn = modal?.querySelector('[data-modal-close]');
+    const backdrop = modal?.querySelector('[data-modal-backdrop]');
+    
+    const closeModal = () => {
+        modal?.classList.add('opacity-0', 'pointer-events-none');
+        modal?.classList.remove('opacity-100', 'pointer-events-auto');
+        modal?.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        
+        // Focus trap cleanup
+        const closeBtn = modal?.querySelector('[data-modal-close]');
+        if (closeBtn) {
+            closeBtn.setAttribute('tabindex', '0');
+        }
+    };
+    
+    const openModal = () => {
+        modal?.classList.remove('opacity-0', 'pointer-events-none');
+        modal?.classList.add('opacity-100', 'pointer-events-auto');
+        modal?.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        
+        // Focus trap
+        const focusableElements = modal?.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const firstFocusable = focusableElements?.[0] as HTMLElement;
+        const lastFocusable = focusableElements?.[focusableElements.length - 1] as HTMLElement;
+        
+        firstFocusable?.focus();
+        
+        modal?.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+            if (e.key === 'Tab') {
+                if (e.shiftKey && document.activeElement === firstFocusable) {
+                    e.preventDefault();
+                    lastFocusable?.focus();
+                } else if (!e.shiftKey && document.activeElement === lastFocusable) {
+                    e.preventDefault();
+                    firstFocusable?.focus();
+                }
+            }
+        });
+    };
+    
+    closeBtn?.addEventListener('click', closeModal);
+    backdrop?.addEventListener('click', closeModal);
+    
+    // Expose open/close methods globally
+    (window as any).openModal = openModal;
+    (window as any).closeModal = closeModal;
+</script>

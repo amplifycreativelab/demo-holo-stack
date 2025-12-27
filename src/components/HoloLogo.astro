@@ -1,0 +1,15 @@
+---
+import { Zap } from "lucide-astro";
+const { class: className } = Astro.props;
+---
+
+<div class:list={["flex items-center gap-2", className]}>
+    <div
+        class="w-10 h-10 rounded-xl bg-holo-a flex items-center justify-center p-2 shadow-[0_0_15px_rgba(124,92,255,0.4)] group-hover:scale-110 transition-transform"
+    >
+        <Zap class="text-white fill-white" />
+    </div>
+    <span class="font-display font-bold text-xl tracking-tight">
+        Holo<span class="text-holo-b">Stack</span>
+    </span>
+</div>

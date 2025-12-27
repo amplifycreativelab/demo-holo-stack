@@ -1,0 +1,165 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import BentoGlassGrid from "../components/BentoGlassGrid.astro";
+import HoloButton from "../components/HoloButton.astro";
+import GlassPanel from "../components/GlassPanel.astro";
+import { features } from "../data/features";
+import { testimonials } from "../data/testimonials";
+
+import { Zap, ShieldCheck, Cpu, Globe, ArrowUpRight } from "lucide-astro";
+
+const baseUrl = import.meta.env.BASE_URL;
+
+const iconMap = {
+	Zap,
+	Lock: ShieldCheck,
+	Cpu,
+	Globe,
+};
+---
+
+<MainLayout title="Next Gen Holographic SaaS">
+	<Header slot="header" />
+
+	{/* Hero Section */}
+	<section class="pt-32 pb-20 px-6">
+		<div class="max-w-7xl mx-auto">
+			<div class="text-center mb-16">
+				<div
+					class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass border border-holo-a/30 text-xs font-bold uppercase tracking-widest text-holo-a mb-6"
+				>
+					<span class="relative flex h-2 w-2">
+						<span
+							class="animate-ping absolute inline-flex h-full w-full rounded-full bg-holo-a opacity-75"
+						></span>
+						<span
+							class="relative inline-flex rounded-full h-2 w-2 bg-holo-a"
+						></span>
+					</span>
+					v2.0 Substrate Now Live
+				</div>
+				<h1
+					class="text-5xl md:text-7xl font-bold mb-6 leading-tight max-w-4xl mx-auto"
+				>
+					Scale with the speed of <span
+						class="text-transparent bg-clip-text bg-linear-to-r from-holo-a to-holo-b"
+						>Optics</span
+					>.
+				</h1>
+				<p
+					class="text-text-muted text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
+				>
+					HoloStack is the world's first holographic infrastructure
+					layer. Designed for extreme performance and effortless
+					scaling.
+				</p>
+				<div
+					class="flex flex-col sm:flex-row items-center justify-center gap-4"
+				>
+					<HoloButton href={`${baseUrl}contact`} showIcon>
+						Start free trial
+					</HoloButton>
+					<HoloButton href={`${baseUrl}pricing`} variant="secondary">
+						View pricing
+					</HoloButton>
+				</div>
+			</div>
+
+			<BentoGlassGrid />
+		</div>
+	</section>
+
+	{/* Features Preview */}
+	<section class="py-24 px-6 relative overflow-hidden">
+		<div
+			class="bg-blob w-[800px] h-[800px] bg-holo-a/5 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+		>
+		</div>
+		<div class="max-w-7xl mx-auto">
+			<div
+				class="flex flex-col md:flex-row items-end justify-between gap-6 mb-16"
+			>
+				<div class="max-w-2xl">
+					<h2 class="text-4xl font-bold mb-4">
+						Engineered for the Infinite.
+					</h2>
+					<p class="text-text-muted">
+						Our substrate is built on principled modularity and
+						extreme efficiency. No compromises.
+					</p>
+				</div>
+				<a
+					href={`${baseUrl}features`}
+					class="text-holo-a font-medium flex items-center gap-2 hover:gap-3 transition-all duration-300"
+				>
+					Explore all features <ArrowUpRight class="w-4 h-4" />
+				</a>
+			</div>
+
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+				{
+					features.map((feature) => {
+						const Icon =
+							iconMap[feature.icon as keyof typeof iconMap] ||
+							Zap;
+						return (
+							<GlassPanel interactive class="p-8 group">
+								<div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center mb-6 border border-glass-edge group-hover:border-holo-a/50 transition-colors">
+									<Icon class="w-6 h-6 text-holo-a" />
+								</div>
+								<h3 class="text-xl font-bold mb-3">
+									{feature.title}
+								</h3>
+								<p class="text-sm text-text-muted leading-relaxed">
+									{feature.description}
+								</p>
+							</GlassPanel>
+						);
+					})
+				}
+			</div>
+		</div>
+	</section>
+
+	{/* Testimonials */}
+	<section class="py-24 px-6 bg-white/[0.02]">
+		<div class="max-w-7xl mx-auto">
+			<h2 class="text-3xl font-bold mb-16 text-center">
+				Trusted by Industry Leaders
+			</h2>
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+				{
+					testimonials.map((t) => (
+						<GlassPanel class="p-10 flex flex-col justify-between">
+							<p class="text-lg text-text-primary/90 italic leading-relaxed mb-8">
+								"{t.quote}"
+							</p>
+							<div class="flex items-center gap-4">
+								<div class="w-12 h-12 rounded-full bg-linear-to-br from-holo-a to-holo-b p-[1px]">
+									<div class="w-full h-full rounded-full bg-night flex items-center justify-center font-bold text-xs">
+										{t.author
+											.split(" ")
+											.map((n) => n[0])
+											.join("")}
+									</div>
+								</div>
+								<div>
+									<div class="font-bold text-sm">
+										{t.author}
+									</div>
+									<div class="text-xs text-text-muted uppercase tracking-wider">
+										{t.role}
+									</div>
+								</div>
+							</div>
+						</GlassPanel>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<Footer slot="footer" />
+</MainLayout>

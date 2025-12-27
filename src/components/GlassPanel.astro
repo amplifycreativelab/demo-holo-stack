@@ -1,0 +1,42 @@
+---
+interface Props {
+    class?: string;
+    intensity?: "light" | "strong";
+    interactive?: boolean;
+    ariaLabel?: string;
+    ariaDescribedby?: string;
+}
+
+const {
+    class: className,
+    intensity = "light",
+    interactive = false,
+    ariaLabel,
+    ariaDescribedby,
+} = Astro.props;
+
+const intensityClass = intensity === "strong" ? "glass-strong" : "glass";
+const interactiveClasses = interactive
+    ? "transition-all duration-300 hover:scale-[1.01] hover:border-white/30 cursor-pointer scroll-highlight"
+    : "";
+---
+
+<div
+    class:list={[
+        "rounded-[--radius-glass] overflow-hidden relative group",
+        intensityClass,
+        interactiveClasses,
+        className,
+    ]}
+    role={interactive ? "button" : undefined}
+    tabindex={interactive ? 0 : undefined}
+    aria-label={ariaLabel}
+    aria-describedby={ariaDescribedby}
+>
+    {/* Specular highlight sweep */}
+    {interactive && <div class="specular-sweep pointer-events-none" aria-hidden="true" />}
+
+    <div class="relative z-10 h-full">
+        <slot />
+    </div>
+</div>

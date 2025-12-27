@@ -1,0 +1,115 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import GlassPanel from "../../components/GlassPanel.astro";
+import { integrations } from "../../data/integrations";
+import {
+    Github,
+    Zap,
+    Globe,
+    Database,
+    Cpu,
+    Lock,
+    CreditCard,
+    MessageSquare,
+} from "lucide-astro";
+
+const iconMap = {
+    Github,
+    Zap,
+    Globe,
+    Database,
+    Cpu,
+    Lock,
+    CreditCard,
+    MessageSquare,
+};
+
+const categories = ["All", "Cloud", "Database", "DevOps", "Security"];
+---
+
+<MainLayout title="Integrations - Connect Your Stack">
+    <Header slot="header" />
+
+    <section class="pt-40 pb-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-20">
+                <h1 class="text-5xl md:text-6xl font-bold mb-6">
+                    Seamless <span class="text-holo-b">Connect</span>.
+                </h1>
+                <p
+                    class="text-text-muted text-xl max-w-2xl mx-auto leading-relaxed"
+                >
+                    HoloStack integrates with the tools you already use,
+                    bringing holographic optics to your entire ecosystem.
+                </p>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-center gap-4 mb-16">
+                {
+                    categories.map((cat) => (
+                        <button class="px-6 py-2 rounded-full glass text-sm font-medium hover:border-holo-a/50 transition-colors">
+                            {cat}
+                        </button>
+                    ))
+                }
+            </div>
+
+            <div
+                class="glass p-12 rounded-[3rem] relative overflow-hidden mb-32"
+            >
+                <div
+                    class="absolute inset-0 bg-linear-to-tr from-holo-a/5 via-transparent to-holo-b/5"
+                >
+                </div>
+                <div
+                    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8 relative z-10"
+                >
+                    {
+                        integrations.map((int) => {
+                            const Icon =
+                                iconMap[int.icon as keyof typeof iconMap] ||
+                                Globe;
+                            return (
+                                <GlassPanel
+                                    interactive
+                                    class="aspect-square flex flex-col items-center justify-center p-6 group"
+                                >
+                                    <div class="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-4 border border-glass-edge group-hover:bg-holo-a/10 transition-colors duration-500">
+                                        <Icon class="w-8 h-8 text-text-primary group-hover:text-holo-a transition-colors" />
+                                    </div>
+                                    <span class="font-bold text-sm tracking-tight">
+                                        {int.name}
+                                    </span>
+                                    <span class="text-[10px] uppercase tracking-widest text-text-muted mt-1">
+                                        {int.category}
+                                    </span>
+                                </GlassPanel>
+                            );
+                        })
+                    }
+                </div>
+            </div>
+
+            <GlassPanel class="p-12 text-center max-w-3xl mx-auto">
+                <h2 class="text-2xl font-bold mb-4">
+                    Can't find an integration?
+                </h2>
+                <p class="text-text-muted mb-8 text-sm">
+                    Our SDK allows you to build custom holographic connectors in
+                    minutes. Documentation coming soon.
+                </p>
+                <div class="flex items-center justify-center gap-4">
+                    <button
+                        class="px-8 py-3 rounded-full bg-white/5 border border-glass-edge font-bold text-sm hover:bg-white/10 transition-colors"
+                    >
+                        Read SDK Docs
+                    </button>
+                </div>
+            </GlassPanel>
+        </div>
+    </section>
+
+    <Footer slot="footer" />
+</MainLayout>
