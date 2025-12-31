@@ -7,6 +7,10 @@ import GlassPanel from "../../components/GlassPanel.astro";
 import { pricingPlans } from "../../data/pricing";
 import { HelpCircle } from "lucide-astro";
 
+const baseUrl = import.meta.env.BASE_URL.endsWith("/")
+    ? import.meta.env.BASE_URL
+    : `${import.meta.env.BASE_URL}/`;
+
 const faqs = [
     {
         q: "How is the holographic substrate billed?",
@@ -77,7 +81,7 @@ const faqs = [
                     aerospace global mesh, and neural-intensive workloads.
                 </p>
                 <a
-                    href={`${import.meta.env.BASE_URL}contact`}
+                    href={`${baseUrl}contact`}
                     class="inline-flex px-10 py-4 bg-holo-b text-night font-bold rounded-2xl relative z-10 hover:scale-[1.05] transition-transform"
                 >
                     Talk to Architecture Team
